@@ -32,10 +32,16 @@ sub get-listing(:$list-num!, :$debug) is export {
         my $list = +$1;
         my $ch   = $chap.chars == 1 ?? "0$chap" !! $chap;
         $fil = "./ch{$ch}/listing-{$chap}.{$list}.html";
+        # does it exist?
+        if $fil.IO.r {
+            ; # ok
+        }
+        else {
+            die "FATAL: File '$fil' cannot be found.";
+        }
     }
     else {
         die "FATAL: Unexpected listing number '$list-num'";
     }
-
-    # least 1.
-}
+    $fil;
+} 

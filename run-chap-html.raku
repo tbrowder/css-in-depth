@@ -85,14 +85,7 @@ if $show and $chap.defined {
 die "FATAL: Unexpected!!" if not ($get and $list-num.defined);
 
 my $fil = get-listing :$list-num, :$debug;
-say "DEBUG: \$fil = '$fil'";
-
-
-=finish
-
-my $k = @*ARGS.shift;
-my $dir = %dirs{$k};
-my $fil = "$dir/index.html".IO.absolute;
+say "DEBUG: \$fil = '$fil'" if $debug;
 
 # execute
 shell "/bin/firefox file://$fil";
