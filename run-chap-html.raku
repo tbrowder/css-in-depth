@@ -1,7 +1,7 @@
 #!/usr/bin/env raku
 
 use lib <./lib>;
-use Subs; 
+use Subs;
 
 my $host = %*ENV<HOST> // "unk";
 
@@ -14,7 +14,7 @@ if not @*ARGS.elems {
     Modes
         show <chapter> - (where chapter is 1..16, shows the
                          listing numbers in the selected chapter)
-               
+
         get <list-num> - (where list-num is the listing number from
                          one of the chapters)
                          runs the selected listing's html file with
@@ -81,6 +81,7 @@ die "FATAL: Unexpected!!" if not ($get and $list-num.defined);
 
 my $fil = get-listing :$list-num, :$debug;
 say "DEBUG: \$fil = '$fil'" if $debug;
+$fil = $fil.IO.absolute;
 
 # make sure there is a DISPLAY env var defined
 unless %*ENV<DISPLAY>:exists  {
