@@ -3,13 +3,6 @@
 use lib <./lib>;
 use Subs; 
 
-=begin comment
-# var defined in BEGIN block at eof:
-my %dirs = [
-    1    => "challenge01",
-];
-=end comment
-
 my $host = %*ENV<HOST> // "unk";
 
 my $is-run-host = $host eq 'juvat3' ?? True !! False;
@@ -28,6 +21,8 @@ if not @*ARGS.elems {
                          Firefox
 
     On host 'juvat3' only, runs one of the 'CSS in Depth' listings in chapters 1-16.
+
+    See example 6.9 as one of the most promosing for the GBUMC Online Directory.
     HERE
     exit;
 }
@@ -59,7 +54,7 @@ for @*ARGS {
         my $c = +$0;
         my $n = +$1;
         $list-num = $c ~ '.' ~ $n;
-        say "DEBUG: list-num: '$list-num'";
+        say "DEBUG: list-num: '$list-num'" if $debug;
     }
     default {
         die "Unknown arg '$_'";
@@ -86,6 +81,11 @@ die "FATAL: Unexpected!!" if not ($get and $list-num.defined);
 
 my $fil = get-listing :$list-num, :$debug;
 say "DEBUG: \$fil = '$fil'" if $debug;
+
+# make sure there is a DISPLAY env var defined
+unless %*ENV<DISPLAY>:exists  {
+    note "FATAL: No DISPLAY defined (you must be at juvat3's desktop)."; exit;
+}
 
 # execute
 shell "/bin/firefox file://$fil";
